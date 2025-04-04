@@ -18,6 +18,16 @@
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .kanban-card h3,
+        .kanban-card p {
+            padding: 2px 4px;
+        }
+        .kanban-card [contenteditable="true"] {
+            background: #f0f9ff;
+            outline: 2px solid #bae6fd;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -25,7 +35,7 @@
     <div class="container mx-auto">
         <header class="mb-8 flex items-center">
             <img 
-                src="data:image/png;base64,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"
+                src="https://yt3.googleusercontent.com/ytc/AIdro_mE4b57gLeLbFef-nYucOGPQv7EM4X8xcQrtCAFLI8MhnA=s900-c-k-c0x00ffffff-no-rj"
                 alt="Logo ArqExpress"
                 class="h-24 w-auto mr-4"
             />
@@ -108,7 +118,7 @@
     </div>
 
     <!-- Modal para novo card -->
-    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
+    <div id="add-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 class="text-xl font-bold mb-4">Novo Card</h3>
             <form id="card-form">
@@ -121,8 +131,29 @@
                     <textarea id="card-desc" rows="3" class="w-full px-3 py-2 border rounded-md"></textarea>
                 </div>
                 <div class="flex justify-end space-x-2">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 border rounded-md">Cancelar</button>
+                    <button type="button" onclick="closeModal('add-modal')" class="px-4 py-2 border rounded-md">Cancelar</button>
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Criar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar card -->
+    <div id="edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Editar Card</h3>
+            <form id="edit-form">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Título</label>
+                    <input type="text" id="edit-title" class="w-full px-3 py-2 border rounded-md" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Descrição</label>
+                    <textarea id="edit-desc" rows="3" class="w-full px-3 py-2 border rounded-md"></textarea>
+                </div>
+                <div class="flex justify-end space-x-2">
+                    <button type="button" onclick="closeModal('edit-modal')" class="px-4 py-2 border rounded-md">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md">Salvar</button>
                 </div>
             </form>
         </div>
@@ -131,39 +162,106 @@
     <script>
         // Initialize Sortable for drag and drop
         document.addEventListener('DOMContentLoaded', () => {
-            // Make columns sortable
+            // Make columns sortable (excluding headers)
             new Sortable(document.getElementById('todo-col'), {
                 group: 'kanban',
                 animation: 150,
-                ghostClass: 'bg-blue-50'
+                ghostClass: 'bg-blue-50',
+                draggable: '.kanban-card',
+                handle: '.kanban-card'
             });
             
             new Sortable(document.getElementById('doing-col'), {
                 group: 'kanban',
                 animation: 150,
-                ghostClass: 'bg-blue-50'
+                ghostClass: 'bg-blue-50',
+                draggable: '.kanban-card',
+                handle: '.kanban-card'
             });
             
             new Sortable(document.getElementById('done-col'), {
                 group: 'kanban',
                 animation: 150,
-                ghostClass: 'bg-blue-50'
+                ghostClass: 'bg-blue-50',
+                draggable: '.kanban-card',
+                handle: '.kanban-card'
+            });
+
+            // Make cards editable
+            document.querySelectorAll('.kanban-card').forEach(card => {
+                card.addEventListener('dblclick', () => {
+                    const title = card.querySelector('h3');
+                    const desc = card.querySelector('p');
+                    
+                    if (title) {
+                        title.contentEditable = true;
+                        title.focus();
+                    }
+                    
+                    if (desc) {
+                        desc.contentEditable = true;
+                    }
+                });
+
+                card.addEventListener('blur', () => {
+                    card.querySelectorAll('[contenteditable]').forEach(el => {
+                        el.contentEditable = false;
+                    });
+                }, true);
             });
 
             // Add event listeners
-            document.getElementById('add-card-btn').addEventListener('click', showModal);
+            document.getElementById('add-card-btn').addEventListener('click', () => showModal('add-modal'));
             document.getElementById('card-form').addEventListener('submit', createCard);
+            
+            // Setup edit for existing cards
+            document.querySelectorAll('.kanban-card').forEach(setupCardEdit);
         });
 
         // Modal functions
-        function showModal() {
-            document.getElementById('modal').classList.remove('hidden');
+        let currentCard = null;
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
-            document.getElementById('card-form').reset();
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            if (modalId === 'add-modal') {
+                document.getElementById('card-form').reset();
+            }
         }
+
+        // Edit card functionality
+        function setupCardEdit(card) {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('button')) return; // Don't open edit if clicking buttons
+                
+                currentCard = card;
+                const title = card.querySelector('h3').textContent;
+                const desc = card.querySelector('p')?.textContent || '';
+                
+                document.getElementById('edit-title').value = title;
+                document.getElementById('edit-desc').value = desc;
+                showModal('edit-modal');
+            });
+        }
+
+        // Handle edit form submission
+        document.getElementById('edit-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const title = document.getElementById('edit-title').value;
+            const desc = document.getElementById('edit-desc').value;
+            
+            if (currentCard) {
+                currentCard.querySelector('h3').textContent = title;
+                if (currentCard.querySelector('p')) {
+                    currentCard.querySelector('p').textContent = desc;
+                }
+                closeModal('edit-modal');
+                currentCard = null;
+            }
+        });
 
         // Create new card
         function createCard(e) {
@@ -185,8 +283,9 @@
 
             // Add to first column (To Do)
             document.getElementById('todo-col').appendChild(newCard);
+            setupCardEdit(newCard); // Enable editing for new card
             updateCounts();
-            closeModal();
+            closeModal('add-modal');
         }
 
         // Update card counts
