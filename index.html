@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanban Board - Pipefy Style</title>
+    <title>Kanban Board</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
     <style>
         .kanban-column {
             min-width: 300px;
@@ -17,28 +18,35 @@
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             margin-bottom: 12px;
-            cursor: grab;
-        }
-        .kanban-card:active {
-            cursor: grabbing;
         }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen p-6">
     <div class="container mx-auto">
-        <header class="mb-8 flex items-center justify-center">
-            <img src="data:image/png;base64,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" 
-                 alt="Logo ArqExpress" 
-                 class="h-16 w-auto mr-4">
+        <header class="mb-8 flex items-center">
+            <img 
+                src="data:image/png;base64,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"
+                alt="Logo"
+                class="w-12 h-12 mr-4 rounded-full shadow-lg"
+            />
             <div>
-                <h1 class="text-3xl font-bold text-gray-800">Kanban ArqExpress</h1>
-                <p class="text-gray-600">Organize os projetos de arquitetura</p>
+                <h1 class="text-3xl font-bold text-gray-800">Meu Kanban</h1>
+                <p class="text-gray-600">Organize suas tarefas</p>
             </div>
         </header>
 
-        <div class="flex overflow-x-auto pb-4 space-x-4">
+        <div class="flex justify-end mb-4">
+            <button 
+                id="add-card-btn"
+                class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center"
+            >
+                <i class="fas fa-plus mr-2"></i> Adicionar Card
+            </button>
+        </div>
+
+        <div class="flex overflow-x-auto pb-4 space-x-4" id="kanban-board">
             <!-- Coluna "A Fazer" -->
-            <div class="kanban-column flex-shrink-0 p-4">
+            <div class="kanban-column flex-shrink-0 p-4" id="todo-col">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="font-semibold text-gray-700">A Fazer</h2>
                     <span class="bg-gray-200 text-gray-700 text-sm px-2 py-1 rounded-full">3</span>
@@ -58,66 +66,43 @@
                     <h3 class="font-medium">Testar integração</h3>
                     <p class="text-sm text-gray-500 mt-1">API de pagamentos</p>
                 </div>
-                
-                <button class="w-full mt-2 text-gray-500 hover:text-gray-700 text-sm flex items-center">
-                    <i class="fas fa-plus mr-2"></i> Adicionar card
-                </button>
             </div>
 
             <!-- Coluna "Fazendo" -->
-            <div class="kanban-column flex-shrink-0 p-4">
+            <div class="kanban-column flex-shrink-0 p-4" id="doing-col">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="font-semibold text-gray-700">Fazendo</h2>
                     <span class="bg-blue-100 text-blue-700 text-sm px-2 py-1 rounded-full">2</span>
                 </div>
                 
                 <div class="kanban-card p-4 border-l-4 border-blue-500">
-                    <h3 class="font-medium">Projeto Shopping Center</h3>
-                    <p class="text-sm text-gray-500 mt-1">Desenhar fachadas</p>
+                    <h3 class="font-medium">Desenvolver feature X</h3>
+                    <p class="text-sm text-gray-500 mt-1">Frontend e backend</p>
                     <div class="flex items-center mt-2 text-sm text-blue-500">
-                        <i class="fas fa-user mr-1"></i> Arq. Oliveira
+                        <i class="fas fa-user mr-1"></i> João
                     </div>
                 </div>
                 
                 <div class="kanban-card p-4 border-l-4 border-blue-500">
-                    <h3 class="font-medium">Residência Alto Padrão</h3>
-                    <p class="text-sm text-gray-500 mt-1">Selecionar materiais</p>
-                    <div class="flex items-center mt-2 text-sm text-blue-500">
-                        <i class="fas fa-user mr-1"></i> Arq. Santos
-                    </div>
+                    <h3 class="font-medium">Reunião com cliente</h3>
+                    <p class="text-sm text-gray-500 mt-1">15:00 - 16:00</p>
                 </div>
-                
-                <button class="w-full mt-2 text-gray-500 hover:text-gray-700 text-sm flex items-center">
-                    <i class="fas fa-plus mr-2"></i> Adicionar card
-                </button>
             </div>
 
             <!-- Coluna "Concluído" -->
-            <div class="kanban-column flex-shrink-0 p-4">
+            <div class="kanban-column flex-shrink-0 p-4" id="done-col">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="font-semibold text-gray-700">Concluído</h2>
                     <span class="bg-green-100 text-green-700 text-sm px-2 py-1 rounded-full">1</span>
                 </div>
                 
                 <div class="kanban-card p-4 border-l-4 border-green-500 opacity-80">
-                    <h3 class="font-medium">Projeto Hotel 5 Estrelas</h3>
-                    <p class="text-sm text-gray-500 mt-1">Entregue ao cliente</p>
+                    <h3 class="font-medium">Configurar servidor</h3>
+                    <p class="text-sm text-gray-500 mt-1">Deploy inicial</p>
                     <div class="flex items-center mt-2 text-sm text-green-500">
-                        <i class="fas fa-check-circle mr-1"></i> Arq. Fernandes
+                        <i class="fas fa-check-circle mr-1"></i> Finalizado
                     </div>
                 </div>
-                
-                <div class="kanban-card p-4 border-l-4 border-green-500 opacity-80">
-                    <h3 class="font-medium">Reforma Escritório</h3>
-                    <p class="text-sm text-gray-500 mt-1">Projeto executivo</p>
-                    <div class="flex items-center mt-2 text-sm text-green-500">
-                        <i class="fas fa-check-circle mr-1"></i> Arq. Lima
-                    </div>
-                </div>
-                
-                <button class="w-full mt-2 text-gray-500 hover:text-gray-700 text-sm flex items-center">
-                    <i class="fas fa-plus mr-2"></i> Adicionar card
-                </button>
             </div>
         </div>
     </div>
@@ -143,95 +128,76 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
     <script>
-        // Carregar dados salvos
-        function loadBoard() {
-            const saved = localStorage.getItem('kanban');
-            if (saved) {
-                document.querySelector('.flex.overflow-x-auto').innerHTML = JSON.parse(saved);
-                updateCounts();
-                initSortable();
-            }
-        }
-        
-        // Salvar estado do board
-        function saveBoard() {
-            const html = document.querySelector('.flex.overflow-x-auto').innerHTML;
-            localStorage.setItem('kanban', JSON.stringify(html));
-        }
-        
-        // Inicializar Sortable
-        function initSortable() {
-            new Sortable(document.querySelector('.kanban-column:nth-child(1)'), {
-                group: 'kanban',
-                animation: 150,
-                ghostClass: 'bg-blue-50',
-                onEnd: saveBoard
-            });
-            
-            new Sortable(document.querySelector('.kanban-column:nth-child(2)'), {
-                group: 'kanban',
-                animation: 150,
-                ghostClass: 'bg-blue-50',
-                onEnd: saveBoard
-            });
-            
-            new Sortable(document.querySelector('.kanban-column:nth-child(3)'), {
-                group: 'kanban',
-                animation: 150,
-                ghostClass: 'bg-blue-50',
-                onEnd: saveBoard
-            });
-        }
-        // Inicializar o board
+        // Initialize Sortable for drag and drop
         document.addEventListener('DOMContentLoaded', () => {
-            loadBoard();
+            // Make columns sortable
+            new Sortable(document.getElementById('todo-col'), {
+                group: 'kanban',
+                animation: 150,
+                ghostClass: 'bg-blue-50'
+            });
             
-            // Se não houver dados salvos, inicializar com dados padrão
-            if (!localStorage.getItem('kanban')) {
-                initSortable();
-                updateCounts();
-            }
+            new Sortable(document.getElementById('doing-col'), {
+                group: 'kanban',
+                animation: 150,
+                ghostClass: 'bg-blue-50'
+            });
+            
+            new Sortable(document.getElementById('done-col'), {
+                group: 'kanban',
+                animation: 150,
+                ghostClass: 'bg-blue-50'
+            });
+
+            // Add event listeners
+            document.getElementById('add-card-btn').addEventListener('click', showModal);
+            document.getElementById('card-form').addEventListener('submit', createCard);
         });
 
         // Modal functions
-        let currentColumn = null;
-        
-        document.querySelectorAll('.kanban-column button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                currentColumn = e.target.closest('.kanban-column');
-                document.getElementById('modal').classList.remove('hidden');
-            });
-        });
-        
+        function showModal() {
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
+            document.getElementById('card-form').reset();
         }
-        
-        document.getElementById('card-form').addEventListener('submit', (e) => {
+
+        // Create new card
+        function createCard(e) {
             e.preventDefault();
             const title = document.getElementById('card-title').value;
             const desc = document.getElementById('card-desc').value;
-            
-            const card = document.createElement('div');
-            card.className = 'kanban-card p-4 mb-3';
-            card.innerHTML = `
+
+            if (!title) {
+                alert('Por favor, insira um título para o card');
+                return;
+            }
+
+            const newCard = document.createElement('div');
+            newCard.className = 'kanban-card p-4 mb-3';
+            newCard.innerHTML = `
                 <h3 class="font-medium">${title}</h3>
                 ${desc ? `<p class="text-sm text-gray-500 mt-1">${desc}</p>` : ''}
             `;
-            
-            currentColumn.insertBefore(card, currentColumn.lastElementChild);
+
+            // Add to first column (To Do)
+            document.getElementById('todo-col').appendChild(newCard);
             updateCounts();
             closeModal();
-            document.getElementById('card-form').reset();
-        });
-        
+        }
+
+        // Update card counts
         function updateCounts() {
-            document.querySelectorAll('.kanban-column').forEach(col => {
-                const count = col.querySelectorAll('.kanban-card').length - 1; // Exclude add button
-                col.querySelector('span').textContent = count;
-            });
+            const todoCount = document.getElementById('todo-col').querySelectorAll('.kanban-card').length;
+            const doingCount = document.getElementById('doing-col').querySelectorAll('.kanban-card').length;
+            const doneCount = document.getElementById('done-col').querySelectorAll('.kanban-card').length;
+
+            document.querySelector('#todo-col span').textContent = todoCount;
+            document.querySelector('#doing-col span').textContent = doingCount;
+            document.querySelector('#done-col span').textContent = doneCount;
         }
     </script>
 </body>
